@@ -1,8 +1,8 @@
 require('dotenv').config();
 import bodyParser from 'body-parser';
-import { AppDataSource } from './ormconfig';
 import { container } from './inversify.config';
 import { InversifyExpressServer } from 'inversify-express-utils';
+import { AppDataSource } from './database/data-source';
 
 const server = new InversifyExpressServer(container);
 //todo why?

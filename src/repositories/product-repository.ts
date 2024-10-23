@@ -1,9 +1,9 @@
 import { ProductDto } from '../dto/product-dto';
 import { ProductRequest } from '../requests/product.request';
-import { AppDataSource } from '../ormconfig';
 import { Product } from '../models/product';
 import { ConflictException } from '../exceptions/conflict-exception';
 import { injectable } from 'inversify';
+import { AppDataSource } from '../database/data-source';
 
 @injectable()
 export class ProductRepository {
