@@ -1,14 +1,19 @@
 import { ProductDto } from '../dto/product-dto';
-import { ProductDatabaseGateway } from '../gateways/database/product-database-gateway';
+import { ProductRepository } from '../repositories/product-repository';
 import { ProductResponseList } from '../responses/product-response-list';
 import { ProductRequest } from '../requests/product.request';
 import { ProductResponse } from '../responses/product-response';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 export class ProductService {
-  constructor(private readonly productsDbGateway: ProductDatabaseGateway) {}
+  constructor(
+    @inject(ProductRepository)
+    private readonly productsRepository: ProductRepository,
+  ) {}
 
   async getAllProducts(): Promise<ProductResponseList> {
-    const productDtos: ProductDto[] = await this.productsDbGateway.fetchAll();
+    const productDtos: ProductDto[] = await this.productsRepository.fetchAll();
 
     return {
       data: productDtos.map((dto) => ({
@@ -21,7 +26,7 @@ export class ProductService {
   }
 
   async createProduct(productData: ProductRequest): Promise<ProductResponse> {
-    const productDto = await this.productsDbGateway.create(productData);
+    const productDto = await this.productsRepository.create(productData);
     return {
       id: productDto.id,
       name: productDto.name,

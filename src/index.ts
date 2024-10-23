@@ -1,18 +1,21 @@
-import express from 'express';
-import apiRoutes from './routes/api';
+require('dotenv').config();
 import bodyParser from 'body-parser';
 import { AppDataSource } from './ormconfig';
+import { container } from './inversify.config';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
-const app = express();
+const server = new InversifyExpressServer(container);
+//todo why?
+server.setConfig((app) => {
+  app.use(bodyParser.json());
+});
 
-app.use(bodyParser.json());
-
-app.use('/api', apiRoutes);
+//todo what does it do?
+const app = server.build();
 
 AppDataSource.initialize()
   .then(() => {
     console.log('Database connected');
-    // Start the server after the database connection is established
     app.listen(8090, () => {
       console.log('Server is running on port 8090');
     });

@@ -1,11 +1,12 @@
-import { ProductDto } from '../../dto/product-dto';
-import { ProductRequest } from '../../requests/product.request';
-import { AppDataSource } from '../../ormconfig';
-import { Product } from '../../models/product';
-import { QueryFailedError } from 'typeorm';
-import { ConflictException } from '../../exceptions/conflict-exception';
+import { ProductDto } from '../dto/product-dto';
+import { ProductRequest } from '../requests/product.request';
+import { AppDataSource } from '../ormconfig';
+import { Product } from '../models/product';
+import { ConflictException } from '../exceptions/conflict-exception';
+import { injectable } from 'inversify';
 
-export class ProductDatabaseGateway {
+@injectable()
+export class ProductRepository {
   private productRepository = AppDataSource.getRepository(Product);
 
   async fetchAll(): Promise<ProductDto[]> {
